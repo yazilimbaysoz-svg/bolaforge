@@ -1,0 +1,19 @@
+# bolaforge ignore rules — Baysöz Labs <baysozlabs@proton.me>
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.semgrep/
+uv.lock
+.coverage
+htmlcov/
+.DS_Store
+*.log
+*.sarif
+plan.json
+results.json

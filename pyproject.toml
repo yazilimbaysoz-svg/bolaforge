@@ -1,0 +1,65 @@
+[build-system]
+requires = ["setuptools>=77.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bolaforge"
+version = "1.0.0"
+description = "Deterministic BOLA/IDOR adversarial test-plan compiler and offline authorization oracle for OpenAPI 3.1 — Baysöz Labs <baysozlabs@proton.me>"
+readme = "README.md"
+requires-python = ">=3.13"
+license = { text = "MIT" }
+authors = [{ name = "Baysöz Labs", email = "baysozlabs@proton.me" }]
+maintainers = [{ name = "Baysöz Labs", email = "baysozlabs@proton.me" }]
+keywords = [
+    "appsec",
+    "redteam",
+    "bola",
+    "idor",
+    "openapi",
+    "authorization",
+    "sarif",
+    "security-testing",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3", "ruff>=0.9", "semgrep>=1.90"]
+
+[project.urls]
+Homepage = "https://github.com/yazilimbaysoz-svg/bolaforge"
+Issues = "https://github.com/yazilimbaysoz-svg/bolaforge/issues"
+
+[project.scripts]
+bolaforge = "bolaforge.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+bolaforge = ["py.typed"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py313"
+extend-exclude = [".venv", "dist", "build"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "S", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "S310", "S603", "S607", "S108"]
+"examples/*" = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

@@ -1,0 +1,33 @@
+{
+  "version": "1.0",
+  "attribution": "Baysöz Labs <baysozlabs@proton.me>",
+  "default_effect": "deny",
+  "resources": {
+    "accounts": {
+      "owner_field": "owner_id",
+      "tenant_field": "tenant_id",
+      "rules": [
+        {"id": "accounts-admin", "effect": "allow", "roles": ["admin"], "actions": ["*"], "scope": "any", "priority": 10},
+        {"id": "accounts-owner", "effect": "allow", "roles": ["tenant_user"], "actions": ["read", "update"], "scope": "own", "priority": 20},
+        {"id": "accounts-tenant-read", "effect": "allow", "roles": ["tenant_user"], "actions": ["read"], "scope": "tenant", "priority": 30, "reason": "tenant-wide read is intentionally permitted in this demo fixture"}
+      ]
+    },
+    "transactions": {
+      "owner_field": "owner_id",
+      "tenant_field": "tenant_id",
+      "rules": [
+        {"id": "transactions-admin", "effect": "allow", "roles": ["admin"], "actions": ["*"], "scope": "any", "priority": 10},
+        {"id": "transactions-owner", "effect": "allow", "roles": ["tenant_user"], "actions": ["read", "create"], "scope": "own", "priority": 20}
+      ]
+    },
+    "documents": {
+      "owner_field": "owner_id",
+      "tenant_field": "tenant_id",
+      "rules": [
+        {"id": "documents-admin", "effect": "allow", "roles": ["admin"], "actions": ["*"], "scope": "any", "priority": 10},
+        {"id": "documents-owner", "effect": "allow", "roles": ["tenant_user"], "actions": ["read"], "scope": "own", "priority": 20},
+        {"id": "documents-sensitive-deny", "effect": "deny", "roles": ["tenant_user"], "actions": ["*"], "scope": "any", "priority": 5, "conditions": {"all": [{"field": "sensitivity", "op": "eq", "value": "admin"}]}}
+      ]
+    }
+  }
+}

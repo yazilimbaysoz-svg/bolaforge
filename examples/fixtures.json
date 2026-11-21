@@ -1,0 +1,17 @@
+{
+  "attribution": "Baysöz Labs <baysozlabs@proton.me>",
+  "actors": [
+    {"id": "anon", "roles": [], "tenant": ""},
+    {"id": "user-alice", "roles": ["tenant_user"], "tenant": "tenant-a"},
+    {"id": "user-bob", "roles": ["tenant_user"], "tenant": "tenant-a"},
+    {"id": "user-carol", "roles": ["tenant_user"], "tenant": "tenant-b"},
+    {"id": "admin-dana", "roles": ["admin"], "tenant": "tenant-a"}
+  ],
+  "objects": [
+    {"ref": "acct-alice", "resource": "accounts", "owner_id": "user-alice", "tenant_id": "tenant-a", "attributes": {"sequence": 1001}},
+    {"ref": "acct-carol", "resource": "accounts", "owner_id": "user-carol", "tenant_id": "tenant-b", "attributes": {"sequence": 2001}},
+    {"ref": "txn-alice", "resource": "transactions", "owner_id": "user-alice", "tenant_id": "tenant-a", "attributes": {"sequence": 5001}},
+    {"ref": "doc-alice", "resource": "documents", "owner_id": "user-alice", "tenant_id": "tenant-a"},
+    {"ref": "doc-admin", "resource": "documents", "owner_id": "admin-dana", "tenant_id": "tenant-a", "sensitivity": "admin"}
+  ]
+}

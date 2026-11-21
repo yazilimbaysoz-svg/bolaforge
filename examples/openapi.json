@@ -1,0 +1,113 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Baysöz Labs Demonstration Banking API",
+    "version": "1.0.0",
+    "description": "Intentionally vulnerable fixture for bolaforge adversarial testing — Baysöz Labs <baysozlabs@proton.me>"
+  },
+  "x-attribution": "Baysöz Labs <baysozlabs@proton.me>",
+  "servers": [{"url": "https://api.example.invalid"}],
+  "paths": {
+    "/v1/accounts/{account_id}": {
+      "parameters": [
+        {
+          "name": "account_id",
+          "in": "path",
+          "required": true,
+          "schema": {"type": "string", "format": "uuid"}
+        }
+      ],
+      "get": {
+        "operationId": "getAccount",
+        "tags": ["accounts"],
+        "responses": {"200": {"description": "Account detail"}}
+      },
+      "patch": {
+        "operationId": "updateAccount",
+        "security": [],
+        "tags": ["accounts"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "display_name": {"type": "string"},
+                  "owner_id": {"type": "string", "format": "uuid"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {"200": {"description": "Updated account"}}
+      }
+    },
+    "/v1/accounts/{account_id}/transactions": {
+      "get": {
+        "operationId": "listTransactions",
+        "tags": ["transactions"],
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string", "format": "uuid"}
+          },
+          {
+            "name": "transaction_id",
+            "in": "query",
+            "required": false,
+            "schema": {"type": "integer", "minimum": 1}
+          }
+        ],
+        "responses": {"200": {"description": "Transaction list"}}
+      },
+      "post": {
+        "operationId": "createTransaction",
+        "tags": ["transactions"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "account_id": {"type": "string", "format": "uuid"},
+                  "owner_id": {"type": "string", "format": "uuid"},
+                  "amount": {"type": "integer"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {"201": {"description": "Created transaction"}}
+      }
+    },
+    "/v1/users/{user_id}/documents/{document_id}": {
+      "get": {
+        "operationId": "getDocument",
+        "x-bola-resource": "documents",
+        "tags": ["documents"],
+        "parameters": [
+          {"name": "user_id", "in": "path", "required": true, "schema": {"type": "string", "format": "uuid"}},
+          {"name": "document_id", "in": "path", "required": true, "schema": {"type": "string"}}
+        ],
+        "responses": {"200": {"description": "Document"}}
+      }
+    },
+    "/v1/health": {
+      "get": {
+        "operationId": "health",
+        "tags": ["ops"],
+        "security": [],
+        "responses": {"200": {"description": "Healthy"}}
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {"type": "http", "scheme": "bearer", "bearerFormat": "JWT"}
+    }
+  }
+}

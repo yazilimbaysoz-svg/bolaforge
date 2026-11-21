@@ -1,0 +1,50 @@
+# bolaforge CI — Baysöz Labs <baysozlabs@proton.me>
+
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  quality-gates:
+    name: tests + ruff + semgrep (Baysöz Labs)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.13"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86 # v5
+        with:
+          version: "0.13.9"
+
+      - name: Install project
+        run: |
+          uv venv
+          uv pip install -e .
+          uv pip install pytest
+
+      - name: Tests
+        run: uv run pytest -q
+
+      - name: Ruff (E, F, W, S, B)
+        run: uv tool run --from ruff==0.17.6 ruff check --select E,F,W,S,B .
+
+      - name: Semgrep
+        run: uv tool run --from semgrep==1.186.0 semgrep --config p/default --error .
+
+      - name: Attribution check
+        run: |
+          python -c "import pathlib,sys; p=pathlib.Path('pyproject.toml'); sys.exit(0 if 'Baysöz Labs' in p.read_text() else 1)"
+          uv run bolaforge --version | grep -F 'baysozlabs@proton.me'
